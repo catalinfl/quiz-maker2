@@ -1,72 +1,6 @@
 @import '__variables.scss';
 
 
-
-
-.navbar {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    max-width: 1280px;
-    margin: 1rem auto;
-    background-color: white;
-    gap: 5vw;
-    transition: all 1s;
-
-    &:hover {
-        box-shadow: 0px 0px 10px grey;
-    }
-
-    .navbarLogo {
-        display: flex;
-        flex: 1;
-        justify-content: left;
-        justify-content: center;
-
-        p {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: $background-orange;
-            cursor: pointer;
-        }
-    }
-
-    .navbarButtons {
-        display: flex;
-        flex: 1;
-        justify-content: left;
-
-        button {
-            font-family: Roboto;
-            font-size: 1.2rem;
-            margin-left: 1rem;
-            padding: 0.5rem 1rem;
-            background-color: transparent;
-            border-radius: 2px;
-            border: solid 2px $background-orange-lightest;
-            align-items: center;        
-            cursor: pointer;
-            transition: 1s all;
-            background-image: -webkit-linear-gradient(30deg, $background-orange-dark 50%, transparent 50%);
-            background-image: linear-gradient(30deg, $background-orange-dark 50%, transparent 50%);
-            background-size: 500px;
-            background-repeat: no-repeat;
-            background-position: 0%;
-            color: white;
-            -webkit-transition: background 300ms ease-in-out;
-            transition: background color 1s;
-
-            &:hover, &:focus {
-                background-position: 100%;
-                color: orange;
-            }
-
-
-        }
-    }
-}
-
 .principal {
     background-color: white;
     max-width: 1280px;
@@ -74,6 +8,10 @@
     margin: 0 auto;
     flex-direction: row;
     
+    @media screen and (max-width: 768px) {
+        flex-direction: column;
+    }
+
     .principalMessage {
         display: flex;
         flex-direction: column;
@@ -90,7 +28,7 @@
         .second {
             font-weight: bold;
             // generate a gradient text to left
-            background: -webkit-linear-gradient(270deg, orange 70%, red 30%);
+            background: -webkit-linear-gradient(orange, red);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -99,13 +37,9 @@
     .principalImg {
         display: flex;
         flex-direction: center;
-        height: 100%;
 
         .image {
             display: flex;
-            height: 10%;
-            align-items: bottom;
-            justify-content: flex-end;
         }
     }
 }

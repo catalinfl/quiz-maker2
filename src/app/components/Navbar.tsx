@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from 'react'
+import '../../../scss/__navbar.scss'
 
 export default function Navbar() {
   return (
@@ -10,9 +11,9 @@ export default function Navbar() {
               </Link>
             </div>
             <div className="navbarButtons">
-              <Link href="/about"> 
+              <Link href="/surveys"> 
               <button className="navAboutButton navButton">
-                About
+                All
               </button>
               </Link>
               <Link href="/quiz"> 
