@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import Images from '../../../public/TEST.png'
+import Images from '../../../public/people.png'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 

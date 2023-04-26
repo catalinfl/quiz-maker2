@@ -1,8 +1,17 @@
 $background-orange: rgb(255, 199, 96);
-$background-orange: #f5a623;
 $background-orange-light: #f5a623;
 $background-orange-dark: #f5a623;
 $background-orange-darker: #f5a623;
 $background-orange-darkest: #f5a623;
 $background-orange-lighter: #f5a623;
 $background-orange-lightest: #f5a623;
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../public/fonts/Roboto-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto-Bold';
+    src: url('../public/fonts/Roboto-Bold.ttf');
+}

@@ -1,8 +1,10 @@
 @import '_variables.scss';
 
 body {
-    background-color: orange;
+    background-color: $background-orange;
 }
+
+$hoverin: false;
 
 @mixin input {
     padding: 5px;
@@ -10,7 +12,7 @@ body {
     border-radius: 5px;
     outline: none;
     border: solid 1px orange;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-family:'Roboto-Bold';
     transition: all 1s;
 
     &:focus {
@@ -32,16 +34,36 @@ body {
     flex-direction: column;
     max-width: 1280px;
     margin: 2rem auto;
-    gap: 1rem 0rem;
+
+    .imageContainer {
+        background-color: white;
+        display: flex;
+        padding: 10px;
+        margin-bottom: -1rem;
+        font-family: 'Roboto';
+    }
+    .createPollName {
+        margin-top: 2rem;
+    }
 
     .createPollName, .createPollQuestion, .createPollResponse {
         @include pollContainer;
 
         .nameInput {
             @include input;
-            font-family: 'Times New Roman', Times, serif;
+            font-family: 'Roboto';
             font-size: 1.5rem;
             width: 50%;
+        }
+    }
+
+    .imageContainer {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        .image {
+            width: 700px;
+            height: 400px;
         }
     }
 
@@ -51,9 +73,8 @@ body {
         flex-direction: row;
         width: 50%;
         align-items: center;
-        gap: 1rem;
         justify-content: center;
-        
+
 
         .icon {
             color: orange;
@@ -68,6 +89,61 @@ body {
 
     .textName, .questionName, .responseName {
         font-size: 1.5rem;
-        font-family: 'Times New Roman', Times, serif;
+        font-family: 'Roboto';
+    }
+
+    .principal {
+        font-size: 3rem;
+    }
+
+    .allResponses {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        margin-top: 2rem;
+
+
+        .response {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            width: 90%;
+            padding: 1rem;
+            border: solid 1px red;
+    
+            .responseText {
+                font-size: 1.5rem;
+                font-family: 'Times New Roman', Times, serif;
+            }
+    
+            .icon {
+                color: red;
+                font-size: 2rem;
+                cursor: pointer;
+                transition: all 1s;
+
+                &:hover {
+                    color: orange;
+                }
+            }
+        }
+    }
+
+    .buttonContainer {
+        background-color: white;
+        display: flex;
+        justify-content: center;
+        padding: 1rem;
+
+        .button {
+            padding: 1rem;
+            border: solid 1px orange;
+            background-color: white;
+            font-family: 'Roboto-Bold';
+            cursor: pointer;
+            outline: none;
+            border-radius: 10px;
+        }
     }
 }
