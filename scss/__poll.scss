@@ -42,9 +42,11 @@ $hoverin: false;
         margin-bottom: -1rem;
         font-family: 'Roboto';
     }
+
     .createPollName {
         margin-top: 2rem;
     }
+
 
     .createPollName, .createPollQuestion, .createPollResponse {
         @include pollContainer;
@@ -90,6 +92,16 @@ $hoverin: false;
     .textName, .questionName, .responseName {
         font-size: 1.5rem;
         font-family: 'Roboto';
+    }
+
+    .textContainer {
+        gap: 3rem;
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        padding: 0rem 2rem;
+        align-items: center;
+
     }
 
     .principal {

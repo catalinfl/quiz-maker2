@@ -10,7 +10,6 @@ function QuizPage() {
             <QuizContainer />
         </div>
     )
-
 }
 
 export default QuizPage;

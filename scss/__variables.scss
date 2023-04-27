@@ -15,3 +15,33 @@ $background-orange-lightest: #f5a623;
     font-family: 'Roboto-Bold';
     src: url('../public/fonts/Roboto-Bold.ttf');
 }
+
+.accessButton {
+    cursor: pointer;
+    border: solid 1px orange;
+    outline: none;
+    font-family: 'Roboto';  
+    font-family: Roboto;
+    font-size: 1.2rem;
+    margin-left: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: transparent;
+    border-radius: 2px;
+    border: solid 2px $background-orange-lightest;
+    align-items: center;        
+    cursor: pointer;
+    transition: 1s all;
+    background-image: -webkit-linear-gradient(30deg, $background-orange-dark 50%, transparent 50%);
+    background-image: linear-gradient(30deg, $background-orange-dark 50%, transparent 50%);
+    background-size: 500px;
+    background-repeat: no-repeat;
+    background-position: 0%;
+    color: white;
+    -webkit-transition: background 300ms ease-in-out;
+    transition: background color 1s;
+
+    &:hover, &:focus {
+        background-position: 100%;
+        color: orange;
+    }  
+}

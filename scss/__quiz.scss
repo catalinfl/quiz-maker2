@@ -2,3 +2,91 @@
 body {
     background-color: $background-orange;
 }
+
+.QuizContainer {
+    max-width: 1280px;
+    margin: 2rem auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.quizPageContainer {
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    padding: 1rem 0rem;
+
+    .quizTextContainer {
+        display: flex;
+        flex-direction: column;
+        justify-items: center;
+        align-items: center;
+    }
+
+    .quizImg {
+        background-color: white;
+        display: flex;
+        font-family: 'Roboto';
+        width: 700px;
+        height: 400px;
+    }
+
+    .quizText {
+        font-size: 3rem;
+        font-family: 'Roboto';
+    }
+}
+
+.quizAdd, .quizQuestion, .quizResponse {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    align-items: center;
+    margin: 0 auto;
+    padding: 1rem 0rem;
+    width: 100%;
+    font-size: 1.5rem;
+    font-family: 'Roboto';
+
+    .quizName {
+        width: 50%;
+    }
+
+    .icon {
+        font-size: 2rem;
+        cursor: pointer;
+    }
+
+    .quizQuestionContainer, .responseContainer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 50%;
+    }
+}
+
+.quizInput {
+    width: 50%;
+    outline: none;
+    font-family: 'Roboto';
+    font-size: 1.5rem;
+    padding: 5px;
+    border-radius: 5px;
+    outline: none;
+    border: solid 1px orange;
+    font-family:'Roboto-Bold';
+    transition: all 1s;
+
+    &:focus {
+        box-shadow: 0px 0px 1em orange;
+    }
+}
+
+.quizResponse {
+    padding-bottom: 2rem;
+
+}
