@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../../../scss/__quiz.scss'
 import '../../../scss/__poll.scss'
 import Img from '../../../public/quiz.svg'
@@ -16,6 +16,15 @@ export default function QuizContainer() {
   const activateQuizFunc = () => {
     setActivateQuiz(!activateQuiz);
   }
+
+  useEffect(() => {
+    if (activateQuiz) {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: 'smooth'
+      })
+    }
+  }, [activateQuiz])
 
   return (
     <div className="QuizContainer">
@@ -44,6 +53,9 @@ export default function QuizContainer() {
           <AiOutlineFileAdd className="icon"/>
           </div>
           <input className="quizInput" type="text" />
+        </motion.div>
+        <motion.div animate={{ y: 0, opacity: 1 }} initial={{ y: 100, opacity: 0 }} className="buttonContainer">
+                <button className="button"> Create </button>
         </motion.div>
         </div>}
     </div>

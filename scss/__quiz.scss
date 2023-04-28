@@ -59,7 +59,14 @@ body {
     .icon {
         font-size: 2rem;
         cursor: pointer;
+        transition: color 1s;
+
+        &:hover {
+            color: orange;
+        }
     }
+
+
 
     .quizQuestionContainer, .responseContainer {
         display: flex;
@@ -88,5 +95,21 @@ body {
 
 .quizResponse {
     padding-bottom: 2rem;
+}
 
+.buttonContainer {
+    display: flex;
+    justify-content: center;
+    background-color: white;
+    padding: 1rem;
+
+    .button {
+        padding: 1rem;
+        background-color: transparent;
+        border: solid 1px orange;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-family: Roboto;
+        cursor: pointer;
+    }
 }

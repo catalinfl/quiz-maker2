@@ -18,37 +18,51 @@ const PollContainer = () => {
     const responsesRef = useRef<HTMLInputElement>(null);
 
     const setTitleFunc = (e: ChangeEvent<HTMLInputElement>) => {
-        if (pollTitle.length < 30) {
+        if (e.target.value.length > 5 && e.target.value.length < 50) {
             setPollTitle(e.target.value);
         }
     }
 
     const setPollQuestionFunc = (e: ChangeEvent<HTMLInputElement>) => {
-        if (pollQuestion.length < 30) {
+        if (e.target.value.length > 5 && e.target.value.length < 100) {
             setPollQuestion(e.target.value);
         }
     }
 
     const setResponseFunc = (e: ChangeEvent<HTMLInputElement>) => {
-        if (response.length < 30) {
+        if (e.target.value.length > 5 && e.target.value.length < 100) {
             setResponse(e.target.value);
         }
     }
 
     const addResponses = () => {
-        setResponsesNumber(responsesNumber + 1);
-        setAllResponses([...allResponses, response]);
-        setResponse("");
-        responsesRef.current!.value = "";
+        if (response.length > 5 && response.length < 100) {
+            setResponsesNumber(responsesNumber + 1);
+            setAllResponses([...allResponses, response]);
+            setResponse("");
+            responsesRef.current!.value = "";
+        }
     }
+
+    console.log(pollTitle, pollQuestion, allResponses)
 
     const createPollContainer = () => {
         setPollContainer(!pollContainer)
     }
 
+    const handleDeleteResponse = (id: number) => {
+        if (allResponses.length > 0) {
+            setResponsesNumber(responsesNumber - 1);
+            setAllResponses(allResponses.filter((response, index) => index !== id));
+        }
+    }
+
     useEffect(() => {
         if (pollContainer) {
-            window.scrollTo(0, document.body.scrollHeight/2);
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            })
         }
     }, [pollContainer])
 
@@ -65,24 +79,24 @@ const PollContainer = () => {
            <div className="test"> 
            <motion.div animate={{x: 0, opacity: 1}} initial={{x: -100, opacity: 0 }} className="createPollName">
                 <p className="textName"> Title of poll </p>
-                <input className="nameInput" onChange={(e: ChangeEvent<HTMLInputElement>) => setTitleFunc(e)} type="text" />
+                <input className="nameInput" onChange={(e: ChangeEvent<HTMLInputElement>) => setTitleFunc(e)} type="text" maxLength={50} />
             </motion.div>
             <motion.div animate={{x: 0, opacity: 1}} initial={{x: 100, opacity: 0 }} className="createPollQuestion">
                 <p className="questionName"> Question </p>
-                <input className="nameInput" onChange={(e: ChangeEvent<HTMLInputElement>) => setPollQuestionFunc(e)} type="text" />
+                <input className="nameInput" onChange={(e: ChangeEvent<HTMLInputElement>) => setPollQuestionFunc(e)} type="text" maxLength={100}/>
             </motion.div>
             <motion.div animate={{x: 0, opacity: 1}} initial={{x: -100, opacity: 0 }} className="createPollResponse">
                  <p className="responseName"> Add a response </p>
                  <div className="responseContainer"> 
-                 <input ref={responsesRef} className="nameInput" type="text" onChange={(e: ChangeEvent<HTMLInputElement>) => setResponseFunc(e)}/>
-                 <AiOutlineFileAdd className="icon" onClick={() => addResponses()}/>
+                 <input ref={responsesRef} className="nameInput" type="text" maxLength={100} onChange={(e: ChangeEvent<HTMLInputElement>) => setResponseFunc(e)}/>
+                 <AiOutlineFileAdd className="icon"/>
                  </div>
                  <div className="allResponses">
                     {allResponses.map((response, index) => {
                         return(
                             <div className="response" key={index}>
                                 <p className="responseText"> {response} </p>
-                                <AiFillDelete className="icon" />
+                                <AiFillDelete className="icon" onClick={() => handleDeleteResponse(index as number)}/>
                             </div>
                         )
                     })
