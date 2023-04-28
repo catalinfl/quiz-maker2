@@ -1,6 +1,6 @@
 "use client"
 import '../../../scss/__poll.scss'
-import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react'
 import { AiOutlineFileAdd, AiFillDelete } from 'react-icons/ai'
 import Image from 'next/image'
 import Img from '../../../public/voting.svg'
@@ -16,6 +16,8 @@ const PollContainer = () => {
     const [pollContainer, setPollContainer] = useState<boolean>(false);
 
     const responsesRef = useRef<HTMLInputElement>(null);
+    const questionRef = useRef<HTMLInputElement>(null);
+    const titleRef = useRef<HTMLInputElement>(null);
 
     const setTitleFunc = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.value.length > 5 && e.target.value.length < 50) {
@@ -30,13 +32,13 @@ const PollContainer = () => {
     }
 
     const setResponseFunc = (e: ChangeEvent<HTMLInputElement>) => {
-        if (e.target.value.length > 5 && e.target.value.length < 100) {
+        if (e.target.value.length >= 2 && e.target.value.length < 100) {
             setResponse(e.target.value);
         }
     }
 
     const addResponses = () => {
-        if (response.length > 5 && response.length < 100) {
+        if (response.length >= 2 && response.length < 100) {
             setResponsesNumber(responsesNumber + 1);
             setAllResponses([...allResponses, response]);
             setResponse("");
@@ -44,7 +46,6 @@ const PollContainer = () => {
         }
     }
 
-    console.log(pollTitle, pollQuestion, allResponses)
 
     const createPollContainer = () => {
         setPollContainer(!pollContainer)
@@ -56,6 +57,25 @@ const PollContainer = () => {
             setAllResponses(allResponses.filter((response, index) => index !== id));
         }
     }
+
+
+    
+    useEffect(() => {
+        const initValues = (pollContainer: boolean) => {
+            if (pollContainer) {
+                if (pollTitle !== "") {
+                    titleRef.current!.value = pollTitle;
+                }
+                if (pollQuestion !== "") {
+                    questionRef.current!.value = pollQuestion;
+                }
+                if (response !== "") {
+                    responsesRef.current!.value = response;
+                }
+            }
+        }
+        initValues(pollContainer);
+    }, [pollContainer, pollTitle, pollQuestion, response])
 
     useEffect(() => {
         if (pollContainer) {
@@ -79,17 +99,17 @@ const PollContainer = () => {
            <div className="test"> 
            <motion.div animate={{x: 0, opacity: 1}} initial={{x: -100, opacity: 0 }} className="createPollName">
                 <p className="textName"> Title of poll </p>
-                <input className="nameInput" onChange={(e: ChangeEvent<HTMLInputElement>) => setTitleFunc(e)} type="text" maxLength={50} />
+                <input ref={titleRef} className="nameInput" onChange={(e: ChangeEvent<HTMLInputElement>) => setTitleFunc(e)} type="text" maxLength={50} />
             </motion.div>
             <motion.div animate={{x: 0, opacity: 1}} initial={{x: 100, opacity: 0 }} className="createPollQuestion">
                 <p className="questionName"> Question </p>
-                <input className="nameInput" onChange={(e: ChangeEvent<HTMLInputElement>) => setPollQuestionFunc(e)} type="text" maxLength={100}/>
+                <input ref={questionRef} className="nameInput" onChange={(e: ChangeEvent<HTMLInputElement>) => setPollQuestionFunc(e)} type="text" maxLength={100}/>
             </motion.div>
             <motion.div animate={{x: 0, opacity: 1}} initial={{x: -100, opacity: 0 }} className="createPollResponse">
                  <p className="responseName"> Add a response </p>
                  <div className="responseContainer"> 
                  <input ref={responsesRef} className="nameInput" type="text" maxLength={100} onChange={(e: ChangeEvent<HTMLInputElement>) => setResponseFunc(e)}/>
-                 <AiOutlineFileAdd className="icon"/>
+                 <AiOutlineFileAdd className="icon" onClick={() => addResponses()}/>
                  </div>
                  <div className="allResponses">
                     {allResponses.map((response, index) => {
