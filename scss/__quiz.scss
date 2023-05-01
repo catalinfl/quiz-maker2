@@ -93,6 +93,28 @@ body {
     }
 }
 
+
+.quizResponsesContainer {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: 1rem;
+
+    .quizResponseContainer {
+        margin-top: 0.5rem;
+        cursor: pointer;
+        width: auto;
+        padding: 0rem 1rem;
+        justify-content: space-between;
+        min-width: 300px;
+        border: solid 1px orange;
+        display: flex;
+        align-items: center;
+    }
+}
+
 .quizResponse {
     padding-bottom: 2rem;
 }

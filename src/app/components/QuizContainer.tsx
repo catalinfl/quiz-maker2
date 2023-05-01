@@ -1,13 +1,28 @@
 "use client"
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import '../../../scss/__quiz.scss'
 import '../../../scss/__poll.scss'
 import Img from '../../../public/quiz.svg'
 import Image from 'next/image'
 import { AiOutlineFileAdd, AiFillDelete } from 'react-icons/ai'
 import { motion } from 'framer-motion'
+import { convertToObject } from 'typescript'
+import { maxHeaderSize } from 'http'
 
+type ResponseProps = {
+  response: string | null;
+  id: number | null;
+  correct: boolean | null;
+}
 
+type SavedQuestionProps = {
+  question: string;
+  id: number;
+}
+
+interface QuestionFullProps extends SavedQuestionProps {
+  responses: Array<ResponseProps>;
+}
 
 export default function QuizContainer() {
 
@@ -15,16 +30,23 @@ export default function QuizContainer() {
   const [quiz, setQuiz] = useState<string>("");
   const [question, setQuestion] = useState<string>("");
   const [response, setResponse] = useState<string>("");
+  const [changeQuestion, setChangeQuestion] = useState<string>("");
 
-  const [allResponses, setAllResponses] = useState<Array<string>>([]);
   const [responsesNumber, setResponsesNumber] = useState<number>(0);
 
-  const [allQuestions, setAllQuestions] = useState<Array<string>>([]);
   const [questionsNumber, setQuestionsNumber] = useState<number>(0);
+
+  const questionRef = useRef<HTMLInputElement>(null);
+  const responseRef = useRef<HTMLInputElement>(null);
+
+  const [current, setCurrent] = useState<number>(0)
+
+  const [allQuestionsFull, setAllQuestionsFull] = useState<Array<QuestionFullProps>>([]);
 
   const activateQuizFunc = () => {
     setActivateQuiz(!activateQuiz);
   }
+
 
   useEffect(() => {
     if (activateQuiz) {
@@ -33,7 +55,7 @@ export default function QuizContainer() {
         behavior: 'smooth'
       })
     }
-  }, [activateQuiz])
+  }, [activateQuiz])    
 
 
   const handleChangeEvent = (e: ChangeEvent<HTMLInputElement>, input: string) => {
@@ -50,34 +72,87 @@ export default function QuizContainer() {
     }
   }
 
+  
+  const setCurrentFunc = (id: number) => {
+    setCurrent(id);
+  }
+
+  console.log(allQuestionsFull)
+
   const handleAddEvent = (type: string) => {
     if (type === "question") {
       if (question.length >= 2 && question.length <= 100) {
         setQuestionsNumber(questionsNumber + 1);
-        setAllQuestions([...allQuestions, question]);
+        const savedQuestion = { question: question, id: questionsNumber, responses: [{
+          response: null,
+          id: null,
+          correct: null
+        }] };
+        setAllQuestionsFull([...allQuestionsFull, savedQuestion]);
         setQuestion("");
+        questionRef.current!.value = ""
       }
     }
     if (type === "response") {
       if (response.length >= 2 && response.length <= 100) {
-        setResponsesNumber(responsesNumber + 1);
-        setAllResponses([...allResponses, response]);
+        setResponsesNumber(allQuestionsFull[current].responses.length);
+        console.log("current: " + current, "response:" + responsesNumber)
+        setResponsesNumber(responsesNumber + 1)
+        const savedResponse = { response: response, id: responsesNumber, correct: false };
+        const questionResp = allQuestionsFull.map((question) => {
+          if (question.responses.some((questionResponse) => questionResponse.id === null || questionResponse.response === null)) {
+            return {
+              ...question,
+              responses: question.responses.filter((questionResponse) => questionResponse.id !== null && questionResponse.response !== null)
+            };
+          }
+          return question;
+        });
+        questionResp[current].responses.push(savedResponse);
+        setAllQuestionsFull(
+          questionResp
+          )
         setResponse("");
+        responseRef.current!.value = ""
       }
     }
   }
 
   const handleDeleteEvent = (type: string, index: number) => {
     if (type === "question") {
-      setAllQuestions(allQuestions.filter((question, i) => i !== index));
+      setAllQuestionsFull(allQuestionsFull.filter((question: QuestionFullProps, i) => i !== index));
       setQuestionsNumber(questionsNumber - 1);
     }
     if (type === "response") {
-      setAllResponses(allResponses.filter((response, i) => i !== index));
+      setAllQuestionsFull(allQuestionsFull.map((question: any) => {
+        question.responses = question.responses.filter((response: any, i: number) => i !== index);
+        return question;
+      })
+      )
+      }
       setResponsesNumber(responsesNumber - 1);
     }
-  }
 
+
+  const handleCorrectResponse = (id: number) => {
+    setAllQuestionsFull(allQuestionsFull.map((question) => {
+      if (question.id === current) {
+        return {
+          ...question,
+          responses: question.responses.map((response) => {
+            if (response.id === id) {
+              return {
+                ...response,
+                correct: !response.correct 
+              }
+            }              
+            return response;
+          })
+        }
+      }
+      return question;
+    }))
+  }
 
 
   return (
@@ -99,12 +174,13 @@ export default function QuizContainer() {
           <p className="quizQuestionName"> Question </p>
           <AiOutlineFileAdd className="icon" onClick={() => handleAddEvent("question")}/>
           </div>
-          <input className="quizInput" type="text" onChange={(e: ChangeEvent<HTMLInputElement>) => handleChangeEvent(e, "question")}/>
+          <input ref={questionRef} className="quizInput" type="text" onChange={(e: ChangeEvent<HTMLInputElement>) => handleChangeEvent(e, "question")}/>
+          {allQuestionsFull.length > 0 && <p> You&apos;re currently editing {allQuestionsFull[current]?.question} </p>}
           <div className="quizResponsesContainer">
-            {allQuestions.map((question, index) => {
+            {allQuestionsFull.map((question, index) => {
               return (
-                <div key={index} className="quizResponseContainer">
-                  <p className="quizResponseName"> {question} </p>
+                <div key={index} className="quizResponseContainer" onClick={() => setCurrentFunc(index)}>
+                  <p className="quizResponseName"> {question.question} </p>
                   <AiFillDelete className="icon" onClick={() => handleDeleteEvent("question", index)}/>
                 </div>
               )
@@ -116,16 +192,18 @@ export default function QuizContainer() {
           <p className="quizResponseName"> Response </p>
           <AiOutlineFileAdd className="icon" onClick={() => handleAddEvent("response")}/>
           </div>
-          <input className="quizInput" type="text" onChange={(e: ChangeEvent<HTMLInputElement>) => handleChangeEvent(e, "response")}/>
+          <input ref={responseRef} className="quizInput" type="text" onChange={(e: ChangeEvent<HTMLInputElement>) => handleChangeEvent(e, "response")}/>
           <div className="quizResponsesContainer">
-            {allResponses.map((response, index) => {
-              return (
-                <div key={index} className="quizResponseContainer">
-                  <p className="quizResponseName"> {response} </p>
-                  <AiFillDelete className="icon" onClick={() => handleDeleteEvent("response", index)}/>
-                </div>
-              )
-            })}
+          {allQuestionsFull !== undefined && allQuestionsFull[current]?.responses[0]?.response !== null && allQuestionsFull[current]?.responses.map((question, index) => (
+          <div key={question.id}>
+              <div key={question.id} className="quizResponseContainer" onClick={() => handleCorrectResponse(question.id as number)} style={{
+                backgroundColor: question.correct ? "#00ff00" : "#ffffff"
+              }}>
+                <p className="quizResponseName">{question.response}</p>
+                <AiFillDelete className="icon" onClick={() => handleDeleteEvent("response", index)} />
+              </div>
+          </div>
+        ))}
           </div>
         </motion.div>
         <motion.div animate={{ y: 0, opacity: 1 }} initial={{ y: 100, opacity: 0 }} className="buttonContainer">
