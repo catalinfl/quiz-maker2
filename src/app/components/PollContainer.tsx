@@ -5,6 +5,7 @@ import { AiOutlineFileAdd, AiFillDelete } from 'react-icons/ai'
 import Image from 'next/image'
 import Img from '../../../public/voting.svg'
 import { motion } from 'framer-motion'
+import axios from "axios"
 
 const PollContainer = () => {
 
@@ -18,6 +19,9 @@ const PollContainer = () => {
     const responsesRef = useRef<HTMLInputElement>(null);
     const questionRef = useRef<HTMLInputElement>(null);
     const titleRef = useRef<HTMLInputElement>(null);
+
+    
+
 
     const setTitleFunc = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.value.length > 5 && e.target.value.length < 50) {
@@ -85,6 +89,20 @@ const PollContainer = () => {
             })
         }
     }, [pollContainer])
+
+    const [data, setData] = useState();
+
+    const fetchData = useCallback(async () => {
+        const response = await axios.get("http://localhost:3000/api/poll");
+        setData(response.data);
+    }, []);
+    
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
+
+    console.log(data);
+
 
     return(
         <div className="pollPageContainer">

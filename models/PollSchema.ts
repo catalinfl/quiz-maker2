@@ -10,7 +10,7 @@ const PollSchema = new mongoose.Schema({
         required: true,
     },
     response: {
-        type: String,
+        type: Array<String>,
         required: true
     }
 });

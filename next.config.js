@@ -2,10 +2,15 @@
 const nextConfig = {
   experimental: {
     appDir: true,
+    esmExternals: true,
+    serverComponentsExternalPackages: ["mongoose"]
   },
   webpack(config) {
-    config.experiments = { ...config.experiments, topLevelAwait: true }
-    return config
+    config.experiments = {
+      topLevelAwait: true,
+      layers: true
+    }
+    return config;
   },
 }
 

@@ -9,7 +9,7 @@ import { motion } from 'framer-motion'
 import { convertToObject } from 'typescript'
 import { maxHeaderSize } from 'http'
 
-type ResponseProps = {
+export type ResponseProps = {
   response: string | null;
   id: number | null;
   correct: boolean | null;
@@ -57,6 +57,7 @@ export default function QuizContainer() {
     }
   }, [activateQuiz])    
 
+  console.log(quiz)
 
   const handleChangeEvent = (e: ChangeEvent<HTMLInputElement>, input: string) => {
     if (e.target.value.length >= 2 && e.target.value.length <= 100) {
@@ -77,7 +78,13 @@ export default function QuizContainer() {
     setCurrent(id);
   }
 
-  console.log(allQuestionsFull)
+  const [data, setData] = useState<any>();
+
+  const handleSaveQuiz = () => {
+    setData({title: quiz, quizzes: allQuestionsFull})
+  }
+  console.log(data)
+
 
   const handleAddEvent = (type: string) => {
     if (type === "question") {
@@ -197,7 +204,7 @@ export default function QuizContainer() {
           {allQuestionsFull !== undefined && allQuestionsFull[current]?.responses[0]?.response !== null && allQuestionsFull[current]?.responses.map((question, index) => (
           <div key={question.id}>
               <div key={question.id} className="quizResponseContainer" onClick={() => handleCorrectResponse(question.id as number)} style={{
-                backgroundColor: question.correct ? "#00ff00" : "#ffffff"
+                backgroundColor: question.correct ? "#519651" : "#ffffff"
               }}>
                 <p className="quizResponseName">{question.response}</p>
                 <AiFillDelete className="icon" onClick={() => handleDeleteEvent("response", index)} />
@@ -207,7 +214,7 @@ export default function QuizContainer() {
           </div>
         </motion.div>
         <motion.div animate={{ y: 0, opacity: 1 }} initial={{ y: 100, opacity: 0 }} className="buttonContainer">
-                <button className="button"> Create </button>
+                <button className="button" onClick={() => handleSaveQuiz()}> Create </button>
         </motion.div>
         </div>}
     </div>
