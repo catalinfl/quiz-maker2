@@ -19,12 +19,10 @@ export async function POST(req: Request) {
     try {
       const data = await req.json();
       const { title, quizzes } = data;
-  
-      const quizDocs = quizzes.map((quiz: any) => new Quiz({ ...quiz, title }));
-  
-      await Quiz.insertMany(quizDocs);
-  
-      return NextResponse.json({ data });
+      
+      const quizDocs = await Quiz.create({ title, quizzes });
+
+      return NextResponse.json({ quizDocs });
     } catch (err) {
       return NextResponse.json({ err });
     }

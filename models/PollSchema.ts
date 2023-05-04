@@ -1,5 +1,11 @@
 import mongoose, { models, model } from "mongoose"
 
+export type PollType = {
+    title: string,
+    question: string,
+    response: Array<String>
+}
+
 const PollSchema = new mongoose.Schema({
     title: {
         type: String,

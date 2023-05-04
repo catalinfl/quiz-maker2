@@ -1,52 +1,52 @@
 import mongoose, { models, model } from "mongoose"
 
-export type ResponsesType = {
-    response: string,
-    id: number,
-    correct: boolean
-}
-
 export type QuizType = {
-    id: number,
-    question: string,
-    responses: Array<ResponsesType>
+  id: number,
+  title: string,
+  quizzes: Array<QuestionType>
 }
 
-export type AllQuiz = {
-    quizzes: Array<QuizType>
-    title: string
+export type QuestionType = {
+  question: string,
+  responses: Array<ResponsesType>
 }
 
-const QuizSchema = new mongoose.Schema({
-    title: {
+export type ResponsesType = {
+  response: string,
+  id: number,
+  correct: boolean
+}
+
+const QuizSchema = new mongoose.Schema<QuizType>({
+  title: {
+    type: String,
+    required: true
+  },
+  quizzes: [{
+    question: {
       type: String,
       required: true
     },
-    quizzes: [{
+    id: {
+      type: Number,
+      required: true
+    },
+    responses: [{
+      response: {
+        type: String,
+        required: true
+      },
       id: {
         type: Number,
         required: true
       },
-      question: {
-        type: String,
+      correct: {
+        type: Boolean,
         required: true
-      },
-      responses: [{
-        response: {
-          type: String,
-          required: true
-        },
-        id: {
-          type: Number,
-          required: true
-        },
-        correct: {
-          type: Boolean,
-          required: true
-        }
-      }]
+      }
     }]
-  });
+  }]
+})
 
 const Quiz = models.Quiz || model('Quiz', QuizSchema);
 

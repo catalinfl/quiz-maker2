@@ -1,0 +1,31 @@
+@import './_variables.scss';
+
+body {
+    background-color: $background-orange;
+}
+
+    .EnterContainer {
+        display: flex;
+        flex-direction: column;
+        border: solid 1px #000;
+        max-width: 1280px;
+        background-color: white;
+        font-family: 'Roboto';
+        margin: 0 auto;
+        
+        .surveyText {
+            text-align: center;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 0 2rem;
+            padding: 0 1rem;
+            
+            .buttonContainer {
+                display: flex;
+            }
+        }
+    }
