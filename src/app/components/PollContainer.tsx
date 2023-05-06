@@ -1,11 +1,14 @@
 "use client"
 import '../../../scss/__poll.scss'
-import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react'
+import { ChangeEvent, useContext, useEffect, useRef, useState } from 'react'
 import { AiOutlineFileAdd, AiFillDelete } from 'react-icons/ai'
 import Image from 'next/image'
 import Img from '../../../public/voting.svg'
 import { motion } from 'framer-motion'
 import axios from "axios"
+import { PollType } from '../../../models/PollSchema'
+import { OpenPollContext, openPoll } from '../../../context/OpenPollContext'
+
 
 const PollContainer = () => {
 
@@ -15,7 +18,16 @@ const PollContainer = () => {
     const [response, setResponse] = useState<string>("")
     const [allResponses, setAllResponses] = useState<Array<string>>([]);
     const [pollContainer, setPollContainer] = useState<boolean>(false);
+    const [poll, setPoll] = useState<PollType>({ 
+        title: "",
+        question: "",
+        response: [] as any
+    });
 
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+
+
+    console.log("Asta e din " + isOpen)
     const responsesRef = useRef<HTMLInputElement>(null);
     const questionRef = useRef<HTMLInputElement>(null);
     const titleRef = useRef<HTMLInputElement>(null);
@@ -50,7 +62,13 @@ const PollContainer = () => {
         }
     }
 
-
+    const submitPoll = async () => {
+        if (allResponses.length !== 0 && pollTitle !== "" && pollQuestion !== "") {
+            setPoll({ title: pollTitle, question: pollQuestion, response: allResponses })
+        }
+        await axios.post('http://localhost:3000/api/poll', poll)
+    }
+    
     const createPollContainer = () => {
         setPollContainer(!pollContainer)
     }
@@ -88,21 +106,7 @@ const PollContainer = () => {
                 behavior: 'smooth'
             })
         }
-    }, [pollContainer])
-
-    const [data, setData] = useState();
-
-    const fetchData = useCallback(async () => {
-        const response = await axios.get("http://localhost:3000/api/poll");
-        setData(response.data);
-    }, []);
-    
-    useEffect(() => {
-        fetchData();
-    }, [fetchData]);
-
-    console.log(data);
-
+    }, [pollContainer])  
 
     return(
         <div className="pollPageContainer">
@@ -142,7 +146,7 @@ const PollContainer = () => {
                  </div>
             </motion.div>
             <motion.div animate={{ y: 0, opacity: 1 }} initial={{ y: 100, opacity: 0 }} className="buttonContainer">
-                <button className="button"> Create </button>
+                <button className="button" onClick={() => submitPoll()}> Create </button>
             </motion.div>
             </div> }
         </div>

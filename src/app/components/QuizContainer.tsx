@@ -8,6 +8,7 @@ import { AiOutlineFileAdd, AiFillDelete } from 'react-icons/ai'
 import { motion } from 'framer-motion'
 import { convertToObject } from 'typescript'
 import { maxHeaderSize } from 'http'
+import axios from 'axios'
 
 export type ResponseProps = {
   response: string | null;
@@ -73,7 +74,6 @@ export default function QuizContainer() {
     }
   }
 
-  
   const setCurrentFunc = (id: number) => {
     setCurrent(id);
   }
@@ -82,9 +82,9 @@ export default function QuizContainer() {
 
   const handleSaveQuiz = () => {
     setData({title: quiz, quizzes: allQuestionsFull})
+    axios.post('http://localhost:3000/api/quiz', data)
   }
-  console.log(data)
-
+  
 
   const handleAddEvent = (type: string) => {
     if (type === "question") {

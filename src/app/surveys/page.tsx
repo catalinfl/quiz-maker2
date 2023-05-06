@@ -37,9 +37,9 @@ async function fetchPoll() {
                 <p className="surveyText"> Select what you want to see: </p>
                 <div className="container"> 
                 <div className="buttonContainer">
-                    <button className="button" onClick={() => {
-
-                    }}> Polls </button>
+                    {/* <button className="button" onClick={() => {
+                        console.log(quizData)
+                    }}> Polls </button> */}
                 </div>
                 <div className="buttonContainer">
                     <button className="button"> Quizzes </button>
