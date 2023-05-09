@@ -3,8 +3,11 @@ import { QuizType } from "../../../models/QuizSchema";
 import Navbar from "../components/Navbar";
 import '../../../scss/__survey.scss'
 import { ChangeEvent } from "react";
+import FetchPoll from "../components/FetchPoll";
+import FetchQuiz from "../components/FetchQuiz";
 
 async function fetchQuiz() {
+    "use server"
     const res = await fetch('http://localhost:3000/api/quiz', {
         next: { revalidate: 60 }
     });
@@ -15,6 +18,7 @@ async function fetchQuiz() {
   }
    
 async function fetchPoll() {
+    "use server"
     const res = await fetch('http://localhost:3000/api/poll',
     { next: { revalidate: 60 } }
     )
@@ -26,26 +30,18 @@ async function fetchPoll() {
 
   export default async function Page() {
     
-    const quizData: QuizType = await fetchQuiz();
-    const pollData: PollType = await fetchPoll();
-    
+    const quizData: { quizzes: QuizType[] }  = await fetchQuiz();
+    const pollData: { polls: PollType[] } = await fetchPoll();
+
 
     return (
         <div className="SurveyPage">
             <Navbar />
             <div className="EnterContainer">
-                <p className="surveyText"> Select what you want to see: </p>
                 <div className="container"> 
-                <div className="buttonContainer">
-                    {/* <button className="button" onClick={() => {
-                        console.log(quizData)
-                    }}> Polls </button> */}
-                </div>
-                <div className="buttonContainer">
-                    <button className="button"> Quizzes </button>
+                    <FetchPoll data={pollData} />
                 </div>
             </div>
-        </div>
         </div>
     )
   }
