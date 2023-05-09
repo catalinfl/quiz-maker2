@@ -28,7 +28,7 @@ async function fetchPoll() {
     
     const quizData: QuizType = await fetchQuiz();
     const pollData: PollType = await fetchPoll();
-
+    
 
     return (
         <div className="SurveyPage">
