@@ -7,12 +7,34 @@ body {
     .EnterContainer {
         display: flex;
         flex-direction: column;
-        border: solid 1px #000;
         max-width: 1280px;
         background-color: white;
         font-family: 'Roboto';
         margin: 0 auto;
         
+        .surveyTitle {
+            color: $background-orange-dark;
+            align-items: center;
+            text-align: center;
+        }
+
+        .titleContainer {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            justify-content: center;
+
+            .title {
+                width: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: white;
+                background-color: orange;
+                padding: 10px;
+            }
+        }
+
         .surveyText {
             text-align: center;
         }
@@ -28,4 +50,17 @@ body {
                 display: flex;
             }
         }
+
+        .fetchPoll, .fetchQuiz {
+            width: 50%;
+        }
+
+        .fetchPoll {
+            @include voteContainer;
+        }
+
+        .fetchQuiz {
+            @include voteContainer;
+        }
+
     }

@@ -16,6 +16,44 @@ $background-orange-lightest: #f5a623;
     src: url('../public/fonts/Roboto-Bold.ttf');
 }
 
+@mixin voteContainer {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    gap: 1rem;
+
+    .poll, .quiz {
+        display: flex;
+        flex-direction: column;
+        border: solid 3px orange;
+        align-items: center;
+        padding: 1rem;
+    }
+
+    .pollQuestionContainer, .quizQuestionContainer {
+        display: flex;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+    }
+
+    .buttonContainer, .quizButtonContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 90%;
+
+        .secondary {
+            margin-left: 0px !important;
+        }
+    }
+}
+
+
 .accessButton {
     cursor: pointer;
     border: solid 1px orange;

@@ -7,7 +7,6 @@ import Img from '../../../public/voting.svg'
 import { motion } from 'framer-motion'
 import axios from "axios"
 import { PollType } from '../../../models/PollSchema'
-import { OpenPollContext, openPoll } from '../../../context/OpenPollContext'
 
 
 const PollContainer = () => {
@@ -21,7 +20,8 @@ const PollContainer = () => {
     const [poll, setPoll] = useState<PollType>({ 
         title: "",
         question: "",
-        response: [] as any
+        response: [] as any,
+        _id: ""
     });
 
     const [isOpen, setIsOpen] = useState<boolean>(false);

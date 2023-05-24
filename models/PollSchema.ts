@@ -3,6 +3,7 @@ import mongoose, { models, model } from "mongoose"
 export type PollType = {
     title: string,
     question: string,
+    _id?: string,
     response: Array<String>
 }
 

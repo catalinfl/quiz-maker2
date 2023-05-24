@@ -38,8 +38,14 @@ async function fetchPoll() {
         <div className="SurveyPage">
             <Navbar />
             <div className="EnterContainer">
+                <h1 className="surveyTitle"> Surveys </h1>
+                <div className="titleContainer">
+                    <h2 className="title"> Polls </h2>
+                    <h2 className="title"> Quizzes </h2>
+                </div>
                 <div className="container"> 
                     <FetchPoll data={pollData} />
+                    <FetchQuiz data={quizData} />
                 </div>
             </div>
         </div>

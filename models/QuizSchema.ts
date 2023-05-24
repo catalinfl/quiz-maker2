@@ -1,7 +1,7 @@
 import mongoose, { models, model } from "mongoose"
 
 export type QuizType = {
-  id: number,
+  _id?: number,
   title: string,
   quizzes: Array<QuestionType>
 }
@@ -13,7 +13,7 @@ export type QuestionType = {
 
 export type ResponsesType = {
   response: string,
-  id: number,
+  _id: number,
   correct: boolean
 }
 
