@@ -3,3 +3,75 @@
 body {
     background-color: $background-orange;
 }
+
+@mixin hoverProperties {
+    background-color: rgb(41, 142, 41);
+            color: white;
+            .voteResponseIcon {
+                color: white;
+    }
+}
+
+
+.voteTitle {
+    font-family: 'Roboto';
+    max-width: 1280px;
+    margin: 0 auto;
+    margin-top: 3rem;
+    text-align: center;
+    font-size: 3rem;
+    text-decoration: underline;
+}
+
+
+.allQuestion {
+    background-color: white;
+    margin: 0 auto;
+    max-width: 1280px;
+    padding: 1rem;
+    font-family: 'Roboto';
+    margin-top: 1rem;
+
+    .voteItemQuestion {
+        font-size: 1.5rem;
+    }
+
+    .voteResponse {
+        display: flex;
+        flex-direction: row;
+        margin: 0 auto;
+        padding-left: 1rem;
+        gap: 1rem;
+        cursor: pointer;
+        align-items: center;
+        transition: all 0.5s;
+
+        .voteResponseIcon {
+            display: flex;
+            color: grey;
+            font-size: 2rem;
+            transition: linear 0.5s;
+        }
+
+        &:hover {
+            @include hoverProperties();
+        }
+
+        &:active {
+            @include hoverProperties();
+        }
+    }
+}
+
+.buttonContainer {
+    max-width: 1280px;
+    margin: 0 auto;
+    color: white;
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.showResultButton {
+    background-color: white;
+}

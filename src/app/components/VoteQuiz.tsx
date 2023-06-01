@@ -3,9 +3,6 @@ import { useEffect, useState } from "react";
 import { QuizType } from "../../../models/QuizSchema";
 import { AiOutlineCheckSquare } from 'react-icons/ai';
 import fetchData from "../../../utils/fetch";
-type QuizDataType = {
-  resp: QuizType
-}
 
 type ResponseType = {
   id: number,
@@ -15,6 +12,7 @@ type ResponseType = {
 
 type ItemType = {
   id: number,
+  _id: string,
   question: string,
   responses: Array<ResponseType>;
 }
@@ -25,13 +23,17 @@ export default function VoteQuiz() {
   const [data, setData] = useState<any>({ resp: { title: "", quizzes: [] } });
   const [item, setItem] = useState<ItemType[]>([]);
   const url = typeof window !== 'undefined' ? new URL(window.location.href) : null;
-  console.log(url);
   const id = url?.pathname.split('/')[2] || null;
   useEffect(() => {
     fetchData('quiz', id as string).then(data => {
       setData(data)
     })
   }, [id])
+
+  console.log(item)
+
+  const [userResponses, setUserResponses] = useState();
+  
 
 
     useEffect(() => {
@@ -44,7 +46,12 @@ export default function VoteQuiz() {
       });
     }, [data])
 
-    console.log(item);
+
+
+    const handleResponseSelect = (itemId: number, responseId: number) => {
+      
+    }
+
 
   return (
     <div className="VoteQuiz">
@@ -54,7 +61,9 @@ export default function VoteQuiz() {
       <div className="voteContainer">
         {item.map((quiz: ItemType) => {
           return (
-            <div key={quiz.id}> 
+            <div key={quiz.id} className="allQuestion" onClick={() => {
+              
+            }}> 
             <div className="voteItemQuestion" key={quiz.id}>
               <h3 className="voteQuestion">{quiz.question}</h3>
             </div>
@@ -62,14 +71,17 @@ export default function VoteQuiz() {
               {quiz.responses.map((response: ResponseType) => {
                   return(
                       <div className="voteResponse" key={response.id}>
-                        <p> {response.response} </p>
                         <AiOutlineCheckSquare className="voteResponseIcon" />
+                        <p> {response.response} </p>
                       </div>
                   )
               })}
             </div>
             </div>
           )})}
+        </div>
+        <div className="buttonContainer">
+          <button className="showResultButton accessButton">Show results</button>
         </div>
     </div>
     )
