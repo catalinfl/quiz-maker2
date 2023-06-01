@@ -24,15 +24,17 @@ export default function VoteQuiz() {
   const [item, setItem] = useState<ItemType[]>([]);
   const url = typeof window !== 'undefined' ? new URL(window.location.href) : null;
   const id = url?.pathname.split('/')[2] || null;
+  const [items, setItems] = useState<ItemType[]>([]); 
+
   useEffect(() => {
     fetchData('quiz', id as string).then(data => {
       setData(data)
     })
   }, [id])
 
-  console.log(item)
 
-  const [userResponses, setUserResponses] = useState();
+
+  const [userResponses, setUserResponses] = useState<any>();
   
 
 
@@ -46,12 +48,25 @@ export default function VoteQuiz() {
       });
     }, [data])
 
+    useEffect(() => {
+      const newItems = item.map((item: ItemType) => {
+        const newResponses = item.responses.map((response: ResponseType) => {
+          return {
+            ...response, 
+            correct: false
+          }
+        })
+        return {
+          ...item,
+          responses: newResponses
+        }
+      })
+      setItems(newItems);
+    }, [item])
 
 
-    const handleResponseSelect = (itemId: number, responseId: number) => {
-      
-    }
 
+  
 
   return (
     <div className="VoteQuiz">
