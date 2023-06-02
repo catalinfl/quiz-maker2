@@ -4,3 +4,46 @@ body {
     background-color: $background-orange;
 }
 
+.VotePoll {
+    background-color: white;
+    margin: 0 auto;
+    padding: 1rem;
+    max-width: 1250px;
+    font-family: 'Roboto';
+
+    .voteTitle {
+        display: flex;
+        justify-content: center;
+    }
+
+    .voteQuestion {
+        display: flex;
+        background-color: $background-orange;
+        padding: 1rem;
+        justify-content: center;
+        color: white;
+    }
+
+    .voteResponseContainer {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .voteResponse {
+        padding-left: 2rem;
+        cursor: pointer;
+        transition: all 1s;
+
+        &:hover {
+            background-color: $background-orange;
+            color: rgb(213, 213, 213);
+        }
+    }
+
+
+    .buttonContainer {
+        display: flex;
+        padding-top: 2rem;
+        justify-content: center;
+    }
+}
