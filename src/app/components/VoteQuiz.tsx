@@ -6,6 +6,7 @@ import fetchData from "../../../utils/fetch";
 
 type ResponseType = {
   id: number,
+  _id: string,
   response: string,
   correct: boolean,
 }
@@ -24,19 +25,16 @@ export default function VoteQuiz() {
   const [item, setItem] = useState<ItemType[]>([]);
   const url = typeof window !== 'undefined' ? new URL(window.location.href) : null;
   const id = url?.pathname.split('/')[2] || null;
-  const [items, setItems] = useState<ItemType[]>([]); 
+  const [items, setItems] = useState<ItemType[]>([]);
+  const [questionNumber, setQuestionNumber] = useState<number>(0);
+  const [grade, setGrade] = useState<number | string>(0);
+  const [containerDisabled, setContainerDisabled] = useState<boolean>(false);
 
   useEffect(() => {
     fetchData('quiz', id as string).then(data => {
       setData(data)
     })
-  }, [id])
-
-
-
-  const [userResponses, setUserResponses] = useState<any>();
-  
-
+  }, [id])  
 
     useEffect(() => {
       data?.resp?.quizzes?.map((quiz: ItemType) => {
@@ -46,7 +44,10 @@ export default function VoteQuiz() {
           }
           return [...prevItem, quiz]});
       });
+      setQuestionNumber(data?.resp?.quizzes?.length)
     }, [data])
+    
+    console.log(questionNumber)
 
     useEffect(() => {
       const newItems = item.map((item: ItemType) => {
@@ -64,29 +65,79 @@ export default function VoteQuiz() {
       setItems(newItems);
     }, [item])
 
+    const setCorrectResponse = (responseId: string) => {
+      const newItems = items.map((item: ItemType) => {
+        const newResponses = item.responses.map((response: ResponseType) => {
+          if (response._id === responseId) {
+            return {
+              ...response,
+              correct: !response.correct
+            }
+          }
+          return response;
+        })
+        return {
+          ...item,
+          responses: newResponses
+        }
+      }
+      )
+      setItems(newItems);
+    };
 
-
-  
+    const onSubmitShowResults = () => {
+      setContainerDisabled(true);
+      let numCorrect = 0;
+      let responses = 0;
+      let trueResponses = 0;
+      item.forEach((item: ItemType) => {
+        const selectedItem = items.find((selectedItem: ItemType) => selectedItem.id === item.id);
+        if (selectedItem) {
+          item.responses.forEach((response: ResponseType) => {
+            const selectedResponse = selectedItem.responses.find((selectedResponse: ResponseType) => selectedResponse.id === response.id);
+            responses++;
+            if (selectedResponse?.correct === true) {
+              trueResponses++;
+            }
+            if (selectedResponse && selectedResponse.correct === response.correct) {
+              numCorrect++;
+            }
+          });
+        }
+      });
+      let partialGrade = (numCorrect/responses)*10;
+      setGrade(partialGrade.toFixed(2));
+      if (trueResponses === 0) {
+        setGrade(0);
+      }
+    };
 
   return (
     <div className="VoteQuiz">
+      { !containerDisabled ? 
+      <> 
       <div className="voteTitleContainer">
         <h2 className="voteTitle">{data?.resp?.title}</h2>
       </div>
       <div className="voteContainer">
-        {item.map((quiz: ItemType) => {
+        {items.map((quiz: ItemType) => {
           return (
-            <div key={quiz.id} className="allQuestion" onClick={() => {
-              
-            }}> 
+            <div key={quiz.id} className="allQuestion"> 
             <div className="voteItemQuestion" key={quiz.id}>
               <h3 className="voteQuestion">{quiz.question}</h3>
             </div>
             <div className="voteResponsesContainer">
               {quiz.responses.map((response: ResponseType) => {
                   return(
-                      <div className="voteResponse" key={response.id}>
-                        <AiOutlineCheckSquare className="voteResponseIcon" />
+                      <div className="voteResponse" style={{
+                        backgroundColor: response.correct ? "green" : "",
+                        color: response.correct ? "white" : ""
+                        }} key={response.id} onClick={() => setCorrectResponse(response._id)}>
+                        <AiOutlineCheckSquare className="voteResponseIcon" 
+                        style={{
+                          color: response.correct ? "white" : ""
+                        }}
+                        />
                         <p> {response.response} </p>
                       </div>
                   )
@@ -96,8 +147,14 @@ export default function VoteQuiz() {
           )})}
         </div>
         <div className="buttonContainer">
-          <button className="showResultButton accessButton">Show results</button>
+          <button className="showResultButton accessButton" onClick={() => onSubmitShowResults() }>Show results</button>
         </div>
+        </>
+        : 
+        <div className="result">
+          <p className="resultText"> Your grade is {grade} </p>
+        </div>
+        }
     </div>
     )
 }

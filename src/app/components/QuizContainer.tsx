@@ -31,11 +31,11 @@ export default function QuizContainer() {
   const [quiz, setQuiz] = useState<string>("");
   const [question, setQuestion] = useState<string>("");
   const [response, setResponse] = useState<string>("");
-  const [changeQuestion, setChangeQuestion] = useState<string>("");
-
+  const [count, setCount] = useState<number>(0);
+  const [confirmText, setConfirmText] = useState<boolean>(false);
   const [responsesNumber, setResponsesNumber] = useState<number>(0);
-
   const [questionsNumber, setQuestionsNumber] = useState<number>(0);
+  const [informMessage, setInformMessage] = useState<boolean>(false);
 
   const questionRef = useRef<HTMLInputElement>(null);
   const responseRef = useRef<HTMLInputElement>(null);
@@ -81,6 +81,10 @@ export default function QuizContainer() {
   const [data, setData] = useState<any>();
 
   const handleSaveQuiz = () => {
+    setCount(count+1);
+    if (count === 0) {
+        setConfirmText(true);
+    }
     setData({title: quiz, quizzes: allQuestionsFull})
     axios.post('http://localhost:3000/api/quiz', data)
   }
@@ -161,6 +165,22 @@ export default function QuizContainer() {
     }))
   }
 
+  useEffect(() => {
+    if (count === 2) {
+      setActivateQuiz(false);
+      setConfirmText(false);
+      setCount(0);
+      setQuiz("");
+      setQuestion("");
+      setResponse("");
+      setAllQuestionsFull([]);
+      setResponsesNumber(0);
+      setQuestionsNumber(0);
+      setInformMessage(true);
+    }
+  }, [count])
+
+
 
   return (
     <div className="QuizContainer">
@@ -214,9 +234,15 @@ export default function QuizContainer() {
           </div>
         </motion.div>
         <motion.div animate={{ y: 0, opacity: 1 }} initial={{ y: 100, opacity: 0 }} className="buttonContainer">
-                <button className="button" onClick={() => handleSaveQuiz()}> Create </button>
-        </motion.div>
+                <button className="button" onClick={() => handleSaveQuiz()}> {confirmText 
+                ? "Confirm"
+                : "Create" } </button>
+        </motion.div> 
         </div>}
+        {informMessage && <div className="informMessageContainer">
+          <p className="informMessage"> You have created a quiz! </p>
+         </div>
+          }
     </div>
     )
 }

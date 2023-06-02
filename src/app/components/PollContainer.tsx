@@ -17,6 +17,8 @@ const PollContainer = () => {
     const [response, setResponse] = useState<string>("")
     const [allResponses, setAllResponses] = useState<Array<string>>([]);
     const [pollContainer, setPollContainer] = useState<boolean>(false);
+    const [count, setCount] = useState<number>(0);
+    const [confirmText, setConfirmText] = useState<boolean>(false);
     const [poll, setPoll] = useState<PollType>({ 
         title: "",
         question: "",
@@ -27,7 +29,6 @@ const PollContainer = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
 
-    console.log("Asta e din " + isOpen)
     const responsesRef = useRef<HTMLInputElement>(null);
     const questionRef = useRef<HTMLInputElement>(null);
     const titleRef = useRef<HTMLInputElement>(null);
@@ -62,11 +63,19 @@ const PollContainer = () => {
         }
     }
 
-    const submitPoll = async () => {
+
+    const submitPoll = () => {
+        setCount(count+1);
+        if (count === 0) {
+            setConfirmText(true);
+        }
         if (allResponses.length !== 0 && pollTitle !== "" && pollQuestion !== "") {
             setPoll({ title: pollTitle, question: pollQuestion, response: allResponses })
+            sendDb();
         }
-        await axios.post('http://localhost:3000/api/poll', poll)
+    }
+    const sendDb = async () => {
+        await axios.post('http://localhost:3000/api/poll', poll);
     }
     
     const createPollContainer = () => {
@@ -79,8 +88,6 @@ const PollContainer = () => {
             setAllResponses(allResponses.filter((response, index) => index !== id));
         }
     }
-
-
     
     useEffect(() => {
         const initValues = (pollContainer: boolean) => {
@@ -146,7 +153,9 @@ const PollContainer = () => {
                  </div>
             </motion.div>
             <motion.div animate={{ y: 0, opacity: 1 }} initial={{ y: 100, opacity: 0 }} className="buttonContainer">
-                <button className="button" onClick={() => submitPoll()}> Create </button>
+                <button className="button" onClick={() => submitPoll()}> {confirmText 
+                ? "Confirm"
+                : "Create" } </button>
             </motion.div>
             </div> }
         </div>
