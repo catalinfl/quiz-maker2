@@ -18,9 +18,9 @@ async function fetchQuiz() {
   }
    
 async function fetchPoll() {
+    "use server"
     const url = typeof window !== 'undefined' ? new URL(window.location.href) : null;
 
-    "use server"
     const res = await fetch(`http://https://astounding-meringue-02e083.netlify.app/api/poll`,
     { next: { revalidate: 60 } }
     )
