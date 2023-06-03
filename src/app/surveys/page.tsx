@@ -7,7 +7,7 @@ import FetchPoll from "../components/FetchPoll";
 import FetchQuiz from "../components/FetchQuiz";
 
 async function fetchQuiz() {
-    const res = await fetch('http://https://astounding-meringue-02e083.netlify.app/api/quiz', {
+    const res = await fetch('https://astounding-meringue-02e083.netlify.app/api/quiz', {
         next: { revalidate: 60 }
     });
     if (!res.ok) {
@@ -19,7 +19,7 @@ async function fetchQuiz() {
 async function fetchPoll() {
     const url = typeof window !== 'undefined' ? new URL(window.location.href) : null;
 
-    const res = await fetch(`http://https://astounding-meringue-02e083.netlify.app/api/poll`,
+    const res = await fetch(`https://astounding-meringue-02e083.netlify.app/api/poll`,
     { next: { revalidate: 60 } }
     )
     if (!res.ok) {
