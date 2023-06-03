@@ -79,6 +79,7 @@ export default function QuizContainer() {
   }
 
   const [data, setData] = useState<any>();
+  const url = location.href.split('/')[2];
 
   const handleSaveQuiz = () => {
     setCount(count+1);
@@ -86,7 +87,7 @@ export default function QuizContainer() {
         setConfirmText(true);
     }
     setData({title: quiz, quizzes: allQuestionsFull})
-    axios.post('http://localhost:3000/api/quiz', data)
+    axios.post(`http://${url}/api/quiz`, data)
   }
   
 

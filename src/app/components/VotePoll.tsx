@@ -34,6 +34,7 @@ export default function VotePoll() {
 
   const [animation, setAnimation] = useState<boolean>(false)
 
+
   return (
     <div className="VotePoll">
       {!voteUnavailable ? (

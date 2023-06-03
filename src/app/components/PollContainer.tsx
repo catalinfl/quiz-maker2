@@ -74,8 +74,11 @@ const PollContainer = () => {
             sendDb();
         }
     }
+
+    const url = location.href.split('/')[2];
+
     const sendDb = async () => {
-        await axios.post('http://localhost:3000/api/poll', poll);
+        await axios.post(`http/${url}/api/poll`, poll);
     }
     
     const createPollContainer = () => {
