@@ -12,13 +12,13 @@ type PollDataType = {
 export default function VotePoll() {
   
   const [data, setData] = useState<PollDataType>({ resp: { title: "", question: "", response: [] } });
-  const url = new URL(window.location.href)
-  const id = url.pathname.split('/')[2]
+  const url = typeof window !== 'undefined' ? new URL(window.location.href) : null;
+  const id = url?.pathname.split('/')[2]
   const [voteUnavailable, setVoteUnavailable] = useState<boolean>(false)
   const [tempResponse, setTempResponse] = useState<string>("");
   
   useEffect(() => {
-    fetchData('poll', id).then(dataFetch => {
+    fetchData('poll', id as string).then(dataFetch => {
       setData(dataFetch)
     })
   }, [id])

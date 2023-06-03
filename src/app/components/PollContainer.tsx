@@ -75,7 +75,8 @@ const PollContainer = () => {
         }
     }
 
-    const url = new URL(window.location.href.split('/')[2]);
+    const url = typeof window !== 'undefined' ? new URL(window.location.href) : null;
+
 
     const sendDb = async () => {
         await axios.post(`http/${url}/api/poll`, poll);

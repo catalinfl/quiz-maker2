@@ -8,7 +8,7 @@ import FetchQuiz from "../components/FetchQuiz";
 
 async function fetchQuiz() {
     "use server"
-    const res = await fetch('http://localhost:3000/api/quiz', {
+    const res = await fetch('http://https://astounding-meringue-02e083.netlify.app/api/quiz', {
         next: { revalidate: 60 }
     });
     if (!res.ok) {
@@ -18,8 +18,10 @@ async function fetchQuiz() {
   }
    
 async function fetchPoll() {
+    const url = typeof window !== 'undefined' ? new URL(window.location.href) : null;
+
     "use server"
-    const res = await fetch('http://localhost:3000/api/poll',
+    const res = await fetch(`http://https://astounding-meringue-02e083.netlify.app/api/poll`,
     { next: { revalidate: 60 } }
     )
     if (!res.ok) {

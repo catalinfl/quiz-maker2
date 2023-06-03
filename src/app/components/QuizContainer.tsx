@@ -79,7 +79,8 @@ export default function QuizContainer() {
   }
 
   const [data, setData] = useState<any>();
-  const url = new URL(window.location.href.split('/')[2]);
+  const url = typeof window !== 'undefined' ? new URL(window.location.href) : null;
+
 
   const handleSaveQuiz = () => {
     setCount(count+1);
