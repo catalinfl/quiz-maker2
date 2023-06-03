@@ -7,7 +7,6 @@ import FetchPoll from "../components/FetchPoll";
 import FetchQuiz from "../components/FetchQuiz";
 
 async function fetchQuiz() {
-    "use server"
     const res = await fetch('http://https://astounding-meringue-02e083.netlify.app/api/quiz', {
         next: { revalidate: 60 }
     });
@@ -18,7 +17,6 @@ async function fetchQuiz() {
   }
    
 async function fetchPoll() {
-    "use server"
     const url = typeof window !== 'undefined' ? new URL(window.location.href) : null;
 
     const res = await fetch(`http://https://astounding-meringue-02e083.netlify.app/api/poll`,
