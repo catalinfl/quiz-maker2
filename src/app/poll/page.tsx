@@ -9,7 +9,6 @@ import { useContext, useState } from "react"
 function PollPage() {
 
     const isOpen = useContext(OpenPollContext)
-    console.log("Asta e din page: " + isOpen);
     
     return (
         <div className="pollPage">

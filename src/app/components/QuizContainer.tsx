@@ -88,7 +88,7 @@ export default function QuizContainer() {
         setConfirmText(true);
     }
     setData({title: quiz, quizzes: allQuestionsFull})
-    axios.post(`http://${url}/api/quiz`, data)
+    axios.post(`https://${url}/api/quiz`, data)
   }
   
 

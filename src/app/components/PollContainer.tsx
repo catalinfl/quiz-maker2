@@ -79,7 +79,7 @@ const PollContainer = () => {
 
 
     const sendDb = async () => {
-        await axios.post(`http/${url}/api/poll`, poll);
+        await axios.post(`https/${url}/api/poll`, poll);
     }
     
     const createPollContainer = () => {
