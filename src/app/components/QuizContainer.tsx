@@ -79,7 +79,7 @@ export default function QuizContainer() {
   }
 
   const [data, setData] = useState<any>();
-  const url = location.href.split('/')[2];
+  const url = new URL(window.location.href.split('/')[2]);
 
   const handleSaveQuiz = () => {
     setCount(count+1);
